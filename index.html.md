@@ -1,3 +1,145 @@
 ---
 title: Pivotal Tracker for PCF
 ---
+
+## Release Notes
+Initial Release
+
+## Requirements
+- Pivotal CF version 1.3.x
+- MySQL for Pivotal CF version 1.3.x
+- Riak CS for Pivotal CF version 1.3.x
+
+## Important Notes
+
+### Data Backup
+
+#### Mysql Database & Riak Blobstore Data
+The Pivotal Tracker product provides no support for backing up data which it stores in the 'MySQL for Pivotal CF' and 'Riak CS for Pivotal CF' services.  Please work with your Pivotal Representative to ensure that proper backup and recovery policies are in place.
+
+### Blobstore Deletion
+**IMPORTANT NOTE:** If you have Pivotal Tracker data stored in the Riak CS for Pivotal CF service, and subsequently switch to using a custom configured S3 compatible Blobstore by entering a "User Provided Blobstore URI" in the Pivotal Tracker product tile configuration, the Riak CS service will be automatically unbound from the Pivotal Tracker tile when you next apply the changes, ***and all Pivotal Tracker data stored in the Riak CS service will be lost***.  Migrate any blobstore objects that you want to preserve to the new blobstore prior to doing this.
+
+## Installation Prerequisites
+
+### Pivotal Tracker Admin User Setup
+Pivotal Tracker for CF requires an "Admin" user to exist in the Cloud Foundry User Database ("UAA") prior to installing the Pivotal Tracker tile.  This can be an existing Cloud Foundry user, or a new one created specifically for this purpose.
+
+## Install via Pivotal Operations Manager
+To install Pivotal Tracker for Pivotal CF, follow the procedure for installing Pivotal Ops Manager tiles:
+
+1. Download the product file from [Pivotal Network](https://network.gopivotal.com/products/tracker-pcf).
+1. Upload the product file to your Ops Manager installation.
+1. Click **Add** next to the uploaded product description in the Available Products view to add this product to your staging area.
+1. Click the newly added tile to review any configurable options.
+1. Click **Apply Changes** to install the service.
+
+## Tile Configuration
+
+### Assign Networks
+Assign the Network which should be used by Pivotal Tracker.  See the Ops Manager Director tile configuration and documentation for more information.
+
+### Assign Availability Zones
+Assign the Availability Zones which should be used by Pivotal Tracker.  See the Ops Manager Director tile configuration and documentation for more information.
+
+### Pivotal Tracker Configuration
+
+#### Subdomain of Pivotal Tracker app
+Enter the subdomain which should be used by Pivotal Tracker.  This will be prepended to the "Apps Domain" configured in Pivotal Elastic Runtime Cloud Controller configuration to determine the host at which the Pivotal Tracker application is available.
+
+#### App Salt
+Enter a random string.  This string is used as a salt when encrypting Pivotal Tracker user passwords. This must remain the same when re-installing Pivotal Tracker and using an existing database, otherwise pre-existing user passwords will not work after re-installation.
+
+#### Pivotal Tracker Admin Email
+Enter the email of the Cloud Foundry user who you decided to use as the Pivotal Tracker "Admin" in the prerequisites section above. 
+
+#### User Provided Blobstore URI
+Pivotal Tracker uses the blobstore to store attachments which are uploaded and attached to stories.
+
+If you want to use the default Riak CS blobstore, leave this field blank.  A Riak CS blobstore service will be automatically created and bound to the Pivotal Tracker app.
+
+If you prefer to use an external blobstore, enter the URI for an S3-compatible blobstore .  E.g.: `http[s]://access_key_id:secret_access_key@server:port/bucket_name`
+
+***WARNING: Adding an external blobstore URI will delete your existing Pivotal Tracker service AND DATA in the Riak CS blobstore.***
+
+#### Number of App Instances
+Enter an integer.  This will control the number of CF instances for the tracker-app routable Pivotal Tracker web app.  Increase for more redundancy and/or scalability.  E.g., if you want the Pivotal Tracker web app to remain available even if one of the web app instances is restarted, set this to 2.
+
+#### Run in Debug Mode
+Check this to run the Pivotal Tracker workers as separate CF apps.  You may want to enable this to provide more isolation for worker apps, e.g. if you are trying to isolate or debug a problem with ordered delayed jobs and want to see only logs related to that.  However, this will increase CPU, RAM, and disk usage, because you will be running four worker apps and instances instead of one.
+
+### Lifecycle Errands
+The "Push Pivotal Tracker" errand should always be enabled when installing, upgrading, or changing configuration of the Pivotal Tracker tile.
+Resource Config
+You may change the resource configuration, but the defaults should be sufficient for most Pivotal Tracker installations.
+
+## Usage
+
+### Logging
+Pivotal Tracker will send Cloud Foundry Elastic Runtime log output to the Syslog Aggregator host defined in the Pivotal Elastic Runtime tile configuration in the "External Endpoints" Settings section, if one is defined.
+
+The output from the Pivotal Tracker Memcached and Solr jobs is available from the "download logs" links on in the Pivotal Tracker tile "Status" section.
+
+### App Status
+Pivotal Tracker has some pages which expose information about the status and health of the app:
+
+#### Env Info
+* **URI:** `https://<yourdomain>/env_info`
+* **Access:** Anyone with access to the domain can see this information, without being logged in to Cloud Foundry.
+* **Description:** Provides status on the various components and services which are part of or support Pivotal Tracker.  If problems with any of these are detected, they will be reported on this page.  The 'index' page is a summary of all components except 'attachments', with links to pages for individual components
+
+#### Env Info Attachments
+* **URI:** `https://<yourdomain>/env_info/attachments`
+* **Access:** Anyone with access to the domain can see this information, without being logged in to Cloud Foundry.
+* **Description:** Provides status on the blobstore, for either the default Riak CS blobstore or an external blobstore.  This information is not available on the the env_info "index" page.
+
+#### Private Install Info
+* **URI:** `https://<yourdomain>/private_install_info`
+* **Access:** Only the authenticated Pivotal Tracker Admin user can view this page.
+* **Description:** Provides detailed information on all Environment Variables which are present in the running Pivotal Tracker environment.  It also provides information on the license and users, but there are currently no license limits enforced in the Pivotal Tracker Cloud Foundry product.
+
+### Tracker Administration
+The Pivotal Tracker Admin can access various pages to control the appearance and behavior of the application.  These are only accessible to an authenticated Pivotal Tracker Admin user, and can be reached via the "admin" link in the header.
+
+#### Admin FAQ
+* **URI:** `https://<yourdomain>/admin/single_account_mode_admin_faq`
+* **Description:** Answers frequently asked questions for the Pivotal Tracker Admin user.
+
+#### Projects
+* **URI:** `https://<yourdomain>/admin/find_projects`
+* **Description:** Allows the Admin to search, create, view, update, or delete projects.
+
+#### People
+* **URI:** `https://<yourdomain>/admin/people`
+* **Description:** Allows the Admin to search, create, view, update, or delete people. See [Adding Users](#adding_users) for more information on adding and removing members.
+
+#### API Tokens
+* **URI:** `https://<yourdomain>/admin/tokens`
+* **Description:** Allows the admin to search and view Pivotal Tracker API Tokens.
+
+#### Maintenance
+* **URI:** `https://<yourdomain>/admin/maintenance_periods`
+* **Description:** Allows the Admin to search, create, view, or delete maintenance periods.  This will cause periodic "countdown" alerts to be shown to users.
+
+### <a name="adding_users"></a>Adding Users
+New Pivotal Tracker users can be invited via the Project "Add/Remove Members" page. Users can be added to multiple projects.
+
+1. Type in a valid email address of a Cloud Foundry user in the "Add a project member" field, assign the desired role, and click "ADD".
+1. The user will receive an email with a link which will allow them to finish the invitation process.
+1. The invited person does not need to be an existing Cloud Foundry user at the time of invitation.  If the invitation recipient is not an existing Cloud Foundry user, they must complete the Cloud Foundry signup process before they can accept the Pivotal Tracker project invitation.
+
+## Support
+Email tracker-pcf@pivotal.io with questions or problems.
+
+### Reporting Problems
+When reporting problems, please provide as much of the following information as possible or appropriate:
+
+* Steps to reproduce the problem including expected behavior and actual behavior
+* The URL of the page(s) involved
+* Any error messages shown
+* A screenshot/screencast showing the problem
+* Any relevant logs (see the "Logging" section above for details)
+* A screenshot or PDF of the `/env_info` and `/env_info/attachments` pages
+
+## Version
+x.y.z
