@@ -21,7 +21,12 @@ The Pivotal Tracker product provides no support for backing up data which it sto
 ## Installation Prerequisites
 
 ### Pivotal Tracker Admin User Setup
-Pivotal Tracker for CF requires an "Admin" user to exist in the Cloud Foundry User Database ("UAA") prior to installing the Pivotal Tracker tile.  This can be an existing Cloud Foundry user, or a new one created specifically for this purpose.
+As part of your Pivotal Tracker tile configuration (see [Pivotal Tracker Admin Email](#pivotal_tracker_admin_email) in Tile Configuration below), Pivotal Tracker for CF requires that you specify the email address of an "Admin" user to perform administrative functions within Pivotal Tracker.
+
+The Pivotal Tracker Admin User must exist in the Cloud Foundry User Database ("UAA"). You may specify an existing Cloud Foundry user, or create a new one specifically for this purpose.
+
+NOTE: This user does not require any org or space permissions, since the account is not used for Cloud Foundry PaaS functions. This user will be granted administrative privileges within the Pivotal Tracker for CF application; installation of Pivotal Tracker for CF does not modify the Admin user's Cloud Foundry permissions within the UAA.
+
 
 ## Install via Pivotal Operations Manager
 To install Pivotal Tracker for Pivotal CF, follow the procedure for installing Pivotal Ops Manager tiles:
@@ -48,7 +53,7 @@ Enter the subdomain which should be used by Pivotal Tracker.  This will be prepe
 #### App Salt
 Enter a random string.  This string is used as a salt when encrypting Pivotal Tracker user passwords. This must remain the same when re-installing Pivotal Tracker and using an existing database, otherwise pre-existing user passwords will not work after re-installation.
 
-#### Pivotal Tracker Admin Email
+#### <a name="pivotal_tracker_admin_email">Pivotal Tracker Admin Email</a>
 Enter the email of the Cloud Foundry user who you decided to use as the Pivotal Tracker "Admin" in the prerequisites section above. 
 
 #### User Provided Blobstore URI
@@ -68,7 +73,14 @@ Check this to run the Pivotal Tracker workers as separate CF apps.  You may want
 
 ### Lifecycle Errands
 The "Push Pivotal Tracker" errand should always be enabled when installing, upgrading, or changing configuration of the Pivotal Tracker tile.
-Resource Config
+
+#### Elastic Runtime Details
+The "Push Pivotal Tracker" lifecycle errand installs and configures the Pivotal Tracker apps in the Elastic Runtime.
+
+It uses the *push_console* CF user to automatically create the Pivotal Tracker apps and services in the *pivotal-tracker* space under the *system* organization.
+
+### Resource Config
+
 You may change the resource configuration, but the defaults should be sufficient for most Pivotal Tracker installations.
 
 ## Architecture Overview
