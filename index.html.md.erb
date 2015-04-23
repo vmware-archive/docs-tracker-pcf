@@ -4,19 +4,19 @@ title: Pivotal Tracker for PCF
 
 
 ## Requirements
-- Pivotal CF version 1.3.x
-- MySQL for Pivotal CF version 1.3.x or 1.4.x
-- Riak CS for Pivotal CF version 1.3.x
+- Pivotal Cloud Foundry version 1.3.x
+- MySQL for Pivotal Cloud Foundry version 1.3.x or 1.4.x
+- Riak CS for Pivotal Cloud Foundry version 1.3.x
 
 ## Important Notes
 
 ### Data Backup
 
 #### Mysql Database & Riak Blobstore Data
-The Pivotal Tracker product provides no support for backing up data which it stores in the 'MySQL for Pivotal CF' and 'Riak CS for Pivotal CF' services.  Please work with your Pivotal Representative to ensure that proper backup and recovery policies are in place.
+The Pivotal Tracker product provides no support for backing up data which it stores in the 'MySQL for PCF' and 'Riak CS for PCF' services.  Please work with your Pivotal Representative to ensure that proper backup and recovery policies are in place.
 
 ### Blobstore Deletion
-**IMPORTANT NOTE:** If you have Pivotal Tracker data stored in the Riak CS for Pivotal CF service, and subsequently switch to using a custom configured S3 compatible Blobstore by entering a "User Provided Blobstore URI" in the Pivotal Tracker product tile configuration, the Riak CS service will be automatically unbound from the Pivotal Tracker tile when you next apply the changes, ***and all Pivotal Tracker data stored in the Riak CS service will be lost***.  Migrate any blobstore objects that you want to preserve to the new blobstore prior to doing this.
+**IMPORTANT NOTE:** If you have Pivotal Tracker data stored in the Riak CS for PCF service, and subsequently switch to using a custom configured S3 compatible Blobstore by entering a "User Provided Blobstore URI" in the Pivotal Tracker product configuration, the Riak CS service will be automatically unbound from the Pivotal Tracker tile when you next apply the changes, ***and all Pivotal Tracker data stored in the Riak CS service will be lost***.  Migrate any blobstore objects that you want to preserve to the new blobstore prior to doing this.
 
 ## Installation Prerequisites
 
@@ -29,7 +29,7 @@ NOTE: This user does not require any org or space permissions, since the account
 
 
 ## Install via Pivotal Operations Manager
-To install Pivotal Tracker for Pivotal CF, follow the procedure for installing Pivotal Ops Manager tiles:
+To install Pivotal Tracker for PCF, follow the procedure for installing PCF Ops Manager products:
 
 1. Download the product file from [Pivotal Network](https://network.pivotal.io/products/pivotal-tracker-cf).
 1. Upload the product file to your Ops Manager installation.
@@ -37,7 +37,7 @@ To install Pivotal Tracker for Pivotal CF, follow the procedure for installing P
 1. Click the newly added tile to review any configurable options.
 1. Click **Apply Changes** to install the product.
 
-## Tile Configuration
+## Product Configuration
 
 ### Assign Networks
 Assign the Network which should be used by Pivotal Tracker.  See the Ops Manager Director tile configuration and documentation for more information.
