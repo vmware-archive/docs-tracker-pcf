@@ -59,17 +59,34 @@ Consider the following compatibility information before upgrading Pivotal Tracke
     </tbody>
   </table>
 
-## Requirements
-* PCF Ops Manager 1.4 or later
-* PCF Elastic Runtime 1.4 or later, with SMTP configured
-* MySQL for PCF 1.4 or later
-* Riak CS for PCF 1.4 or later
+## Software Requirements
+- PCF Ops Manager 1.4 or later
+- PCF Elastic Runtime 1.4 or later, with SMTP configured
+- MySQL for PCF 1.4 or later
+- Riak CS for PCF 1.4 or later
+
+## Infrastructure Requirements
+- Two Persistent VMs
+  - Memcached: 512MB RAM, 1GB ephemeral disk
+  - Solr: 2GB RAM, 1.5GB ephemeral disk, 3GB persistent disk
+- Two Ephemeral VMs
+  - Push/Delete Errands: 512MB RAM, 2GB ephemeral disk
+  - Compilation: 1GB RAM, 2GB ephemeral disk
+- Two Elastic Runtime Apps
+  - tracker-app: 1.5GB RAM, 1GB ephemeral disk
+  - tracker-workers: 1GB RAM, 1GB ephemeral disk
+
+Minimal Pivotal Tracker installation: 4GB RAM, 4.5GB ephemeral disk, 3GB persistent disk. Additional tracker-app instances: 1.5GB RAM, 1GB ephemeral disk. Splitting workers into separate apps: 4GB RAM, 4GB ephemeral disk.
 
 ## Important Notes
 
 ### Data Backups
 
 Pivotal Tracker for PCF does not yet back up any data it stores in the MySQL or Riak CS services. Please work with your Pivotal Representative to ensure that proper backup and recovery policies are in place.
+
+### Database and Blobstore Sizing
+
+On average, an active user consumes ~23KB of DB storage and ~100KB of blobstore storage per day. An "active" user is defined as one that makes changes in Pivotal Tracker on a daily basis.
 
 ### Migrating from Riak CS Blobstore to External Blobstore
 Given the following scenario: Pivotal Tracker was configured to use Riak CS for PCF, installed via Ops Manager, and end-users have data stored in Pivotal Tracker (specifically, attachment uploads are stored in the blobstore). If Pivotal Tracker is subsequently reconfigured to use an external blobstore in Ops Manager, the Riak CS data will be ***automatically deleted*** upon the next installation in Ops Manager. Be sure to migrate any blobstore objects that you want to preserve to the new blobstore prior to doing this. Please work with your Pivotal Representative for more details.
