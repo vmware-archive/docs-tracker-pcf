@@ -1,10 +1,10 @@
 ---
-title: Pivotal Tracker for PCF
+title: Pivotal Tracker
 ---
 
 ## Product Snapshot
 <dl>
-  <dt>Current Pivotal Tracker for PCF Details</dt>
+  <dt>Current Pivotal Tracker Details</dt>
   <dd>
     <strong>Version</strong>: 1.2.1.10
   </dd>
@@ -26,7 +26,7 @@ title: Pivotal Tracker for PCF
 </dl>
 
 ## Upgrading to the Latest Version
-Consider the following compatibility information before upgrading Pivotal Tracker for PCF.
+Consider the following compatibility information before upgrading Pivotal Tracker.
 
 <table border="1" class="nice">
   <tbody>
@@ -60,10 +60,10 @@ Consider the following compatibility information before upgrading Pivotal Tracke
   </table>
 
 ## Software Requirements
-- PCF Ops Manager 1.4 or later
-- PCF Elastic Runtime 1.4 or later, with SMTP configured
-- MySQL for PCF 1.4 or later
-- Riak CS for PCF 1.4 or later
+- Ops Manager 1.4 or later
+- Elastic Runtime 1.4 or later, with SMTP configured
+- MySQL 1.4 or later
+- Riak CS 1.4 or later
 
 ## Infrastructure Requirements
 - Two Persistent VMs
@@ -82,27 +82,27 @@ Minimal Pivotal Tracker installation: 4GB RAM, 4.5GB ephemeral disk, 3GB persist
 
 ### Data Backups
 
-Pivotal Tracker for PCF does not yet back up any data it stores in the MySQL or Riak CS services. Please work with your Pivotal Representative to ensure that proper backup and recovery policies are in place.
+Pivotal Tracker does not yet back up any data it stores in the MySQL or Riak CS services. Please work with your Pivotal Representative to ensure that proper backup and recovery policies are in place.
 
 ### Database and Blobstore Sizing
 
 On average, an active user consumes ~23KB of DB storage and ~100KB of blobstore storage per day. An "active" user is defined as one that makes changes in Pivotal Tracker on a daily basis.
 
 ### Migrating from Riak CS Blobstore to External Blobstore
-Given the following scenario: Pivotal Tracker was configured to use Riak CS for PCF, installed via Ops Manager, and end-users have data stored in Pivotal Tracker (specifically, attachment uploads are stored in the blobstore). If Pivotal Tracker is subsequently reconfigured to use an external blobstore in Ops Manager, the Riak CS data will be ***automatically deleted*** upon the next installation in Ops Manager. Be sure to migrate any blobstore objects that you want to preserve to the new blobstore prior to doing this. Please work with your Pivotal Representative for more details.
+Given the following scenario: Pivotal Tracker was configured to use Riak CS, installed via Ops Manager, and end-users have data stored in Pivotal Tracker (specifically, attachment uploads are stored in the blobstore). If Pivotal Tracker is subsequently reconfigured to use an external blobstore in Ops Manager, the Riak CS data will be ***automatically deleted*** upon the next installation in Ops Manager. Be sure to migrate any blobstore objects that you want to preserve to the new blobstore prior to doing this. Please work with your Pivotal Representative for more details.
 
 ## Installation Prerequisites
 
 ### Pivotal Tracker Admin User
 As part of the Pivotal Tracker configuration in Ops Manager (see [Pivotal Tracker Admin Email](#pivotal_tracker_admin_email) below), an Elastic Runtime user must be specified to function as the Pivotal Tracker Administrator. This user does not need administrative privileges for Elastic Runtime though.
 
-The Pivotal Tracker Admin User must already exist in the Elastic Runtime User Database ("UAA"). The user will not be automatically created upon installation of the Pivotal Tracker for PCF product.
+The Pivotal Tracker Admin User must already exist in the Elastic Runtime User Database ("UAA"). The user will not be automatically created upon installation of the Pivotal Tracker product.
 
-NOTE: This user does not require any org or space permissions, since the account is not used for Elastic Runtime PaaS functions. This user will be granted administrative privileges only within the Pivotal Tracker for PCF application; installation of Pivotal Tracker for PCF does not modify the UAA Administrator permissions.
+NOTE: This user does not require any org or space permissions, since the account is not used for Elastic Runtime PaaS functions. This user will be granted administrative privileges only within the Pivotal Tracker application; installation of Pivotal Tracker does not modify the UAA Administrator permissions.
 
 
-## Install via PCF Ops Manager
-To install Pivotal Tracker for PCF, follow the procedure for installing PCF Ops Manager products:
+## Install via Ops Manager
+To install Pivotal Tracker, follow the procedure for installing Ops Manager products:
 
 1. Download the product file from [Pivotal Network](https://network.pivotal.io/products/pivotal-tracker-cf).
 1. Upload the product file to your Ops Manager installation.
@@ -129,7 +129,7 @@ Enter the subdomain which should be used by Pivotal Tracker. This will be prepen
 Enter a random string. This string is used as a salt when encrypting Pivotal Tracker user passwords. This must remain the same when re-installing Pivotal Tracker and using an existing database, otherwise pre-existing user passwords will not work after re-installation.
 
 #### MySQL Service Plan
-This is the name of the MySQL for PCF service plan to use when provisioning the Pivotal Tracker database. Refer to the MySQL for PCF [Service Plan documentation](/p-mysql/index.html#service-plan) for more information.
+This is the name of the MySQL service plan to use when provisioning the Pivotal Tracker database. Refer to the MySQL [Service Plan documentation](/p-mysql/index.html#service-plan) for more information.
 
 #### <a name="pivotal_tracker_admin_email"></a>Pivotal Tracker Admin Email
 Enter the email of the Elastic Runtime user who will serve as the Pivotal Tracker Administrator.
@@ -144,13 +144,13 @@ Check this to run the Pivotal Tracker workers as separate Elastic Runtime apps. 
 ### Blobstore Config
 
 #### Riak CS Service
-By default, Pivotal Tracker for PCF uses a Riak CS service instance to store file uploads attached to Pivotal Tracker Stories. Specify the Riak CS service plan to use when provisioning the Pivotal Tracker blobstore. Refer to the Riak CS for PCF [Service Plan documentation](/p-riakcs/index.html#service-plan) for more information.
+By default, Pivotal Tracker uses a Riak CS service instance to store file uploads attached to Pivotal Tracker Stories. Specify the Riak CS service plan to use when provisioning the Pivotal Tracker blobstore. Refer to the Riak CS [Service Plan documentation](/p-riakcs/index.html#service-plan) for more information.
 
 #### External Blobstore
 
 If you prefer to use an external S3-compatible blobstore, enter the necessary configuration details.
 
-***WARNING: Reconfiguring Pivotal Tracker for PCF to use an external blobstore will delete any existing Pivotal Tracker Riak CS service and its associated data.***
+***WARNING: Reconfiguring Pivotal Tracker to use an external blobstore will delete any existing Pivotal Tracker Riak CS service and its associated data.***
 
 
 ### Lifecycle Errands
@@ -177,7 +177,7 @@ You may change the resource configuration, but the defaults should be sufficient
 ### Logging
 Pivotal Tracker Web and Worker apps log via Elastic Runtime [Loggregator](/pivotalcf/devguide/deploy-apps/streaming-logs.html).
 
-Logs for Pivotal Tracker Memcached and Solr jobs are available from the *Logs* section in PCF Ops Manager.
+Logs for Pivotal Tracker Memcached and Solr jobs are available from the *Logs* section in Ops Manager.
 
 ### App Status
 Pivotal Tracker has some pages which expose information about the status and health of the app:
@@ -223,7 +223,7 @@ The Pivotal Tracker Admin can access various pages to control the appearance and
 ### <a name="user_administration"></a>User Administration
 
 #### Account Email Validation
-Note that Pivotal Tracker has stricter validation rules for a "valid" email address when compared to the Elastic Runtime UAA. It's possible an Elastic Runtime user was provisioned with an email such as `user@hostname`, which will fail validation when attempting to log in to Pivotal Tracker. We plan to address this limitation in a future release of Pivotal Tracker for PCF; in the meantime, the email will need to be changed by an Elastic Runtime administrator to an acceptable address such as `user@hostname.com`.
+Note that Pivotal Tracker has stricter validation rules for a "valid" email address when compared to the Elastic Runtime UAA. It's possible an Elastic Runtime user was provisioned with an email such as `user@hostname`, which will fail validation when attempting to log in to Pivotal Tracker. We plan to address this limitation in a future release of Pivotal Tracker; in the meantime, the email will need to be changed by an Elastic Runtime administrator to an acceptable address such as `user@hostname.com`.
 
 #### Inviting Users to a Pivotal Tracker Project
 New Pivotal Tracker users can be invited via the Project "Add/Remove Members" page. Users can be added to multiple projects.
@@ -234,7 +234,7 @@ New Pivotal Tracker users can be invited via the Project "Add/Remove Members" pa
 
 
 #### Self-service Signup of New Users
-Because Pivotal Tracker for PCF uses the Elastic Runtime for user authentication, the ability for end-users to self-provision their own Pivotal Tracker accounts depends on the configuration of Elastic Runtime. Specifically, refer to the [Apps Manager documentation](/pivotalcf/console/console-env-variables.html) pertaining to the `ENABLE_NON_ADMIN_USER_MANAGEMENT` configuration option.
+Because Pivotal Tracker uses the Elastic Runtime for user authentication, the ability for end-users to self-provision their own Pivotal Tracker accounts depends on the configuration of Elastic Runtime. Specifically, refer to the [Apps Manager documentation](/pivotalcf/console/console-env-variables.html) pertaining to the `ENABLE_NON_ADMIN_USER_MANAGEMENT` configuration option.
 
 #### Suspended Users
 If a Pivotal Tracker user account is suspended by the Pivotal Tracker Administrator, the affected user will get an HTTP 500 response when trying to authenticate to Pivotal Tracker.
