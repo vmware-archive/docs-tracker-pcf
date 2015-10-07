@@ -295,7 +295,7 @@ Pivotal Tracker users do not have the ability to reset their password. If a pass
 
 
 
-## Support
+## <a name="support"></a>Support
 Email tracker-pcf@pivotal.io with questions or problems.
 
 
@@ -308,3 +308,121 @@ When reporting problems, please provide as much of the following information as 
 * A screenshot/screencast showing the problem
 * Any relevant logs (see the "Logging" section above for details)
 * A screenshot or PDF of the `/env_info` and `/env_info/attachments` pages
+
+
+
+## <a name="migrating_to_external_db"></a>Migrating Data to an External Database
+
+Outlined below are the steps to migrate Pivotal Tracker data stored in a MySQL for PCF service instance
+to an external MySQL database. If any of the steps below aren't clear, please contact us for [support](#support).
+
+
+### Gather Prerequisite Information
+
+#### MySQL for PCF Service Instance Credentials
+
+Log in to Pivotal Tracker with the [admin account](#pivotal_tracker_admin_email) and navigate to `https://<yourdomain>/private_install_info`. Find the `DATABASE_URL` entry, which will be in the following format:  `mysql2://TRACKER_DB_USER:TRACKER_DB_PASSWORD@TRACKER_DB_HOST:3306/TRACKER_DB_NAME?reconnect=true`. Record the databse user, password, and name. For example:
+
+| Credential Name       | Value                                       |
+| --------------------- | ------------------------------------------- |
+| TRACKER\_DB\_USER     | zmiXBCnJUXdWOlk4                            |
+| TRACKER\_DB\_PASSWORD | 96hsLUvnP9l4GYqP                            |
+| TRACKER\_DB\_NAME     | cf_aca7137f\_49b7\_4926\_a96b\_b053659c5bd4 |
+
+From Ops Manager, click on the MySQL for PCF tile. Go to the 'Credentials' tab and record the VM Credentials for the MySQL Server job. In the 'Status' tab and record one of the IPs listed under the MySQL Server job. For example:
+
+| Credential Name     | Value            |
+| ------------------- | ---------------- |
+| MYSQL\_VM\_USER     | vcap             |
+| MYSQL\_VM\_PASSWORD | 4cde067ab5f331fa |
+| MYSQL\_VM\_IP       | 10.85.58.147     |
+
+#### External MySQL Database Credentials
+
+For the external database, record the hostname, port, user, password, and database name. For example:
+
+| Credential Name        | Value                 |
+| ---------------------- | --------------------- |
+| EXTERNAL\_DB\_HOSTNAME | db-host01.my-corp.com |
+| EXTERNAL\_DB\_PORT     | 3306                  |
+| EXTERNAL\_DB\_USER     | mysql-tracker-user    |
+| EXTERNAL\_DB\_PASSWORD | 0xCOFFEE              |
+| EXTERNAL\_DB_NAME      | ext\_tracker\_db      |
+
+
+### Unmap Pivotal Tracker Route
+
+To prevent Pivotal Tracker users from adding new data while the migration takes place, map the
+application route to a new URL that is unknown to users. For example: map `tracker.system.cf.biz` to
+`tracker-maintenance.system.cf.biz`. For instructions on modifying routes, refer to the
+[Assign or Change a Route](/pivotalcf/devguide/deploy-apps/domains-routes.html#map-route) documentation.
+
+
+### Export Data to Backup File
+
+Run the following command to export Pivotal Tracker data to the local file `/tmp/tracker_db_backup.sql`:
+
+```
+ssh MYSQL_VM_USER@MYSQL_VM_IP /var/vcap/packages/mariadb/bin/mysqldump \
+ -u TRACKER_DB_USER -p TRACKER_DB_NAME > /tmp/tracker_db_backup.sql
+```
+
+You will be prompted for the credential MYSQL\_VM\_PASSWORD, followed by TRACKER\_DB\_PASSWORD. For example:
+
+```
+$ ssh vcap@10.85.58.147 /var/vcap/packages/mariadb/bin/mysqldump \
+ -u zmiXBCnJUXdWOlk4 -p cf_aca7137f_49b7_4926_a96b_b053659c5bd4 > /tmp/tracker_db_backup.sql
+Ubuntu 14.04.3 LTS \n \l
+
+vcap@10.85.58.147's password:
+< enter 4cde067ab5f331fa >
+Enter password:
+< enter 96hsLUvnP9l4GYqP >
+```
+
+Verify the data was exported by checking the contents of `/tmp/tracker_db_backup.sql`.
+
+
+### Import Data to External Database
+
+Run the following command to import the Pivotal Tracker data into the external database:
+
+```
+mysql -h EXTERNAL_DB_HOSTNAME -P EXTERNAL_DB_PORT -u EXTERNAL_DB_USER -pEXTERNAL_DB_PASSWORD EXTERNAL_DB_NAME \
+ < /tmp/tracker_db_backup.sql
+```
+
+Note: There is no space between `-p` and EXTERNAL\_DB\_PASSWORD. For example:
+
+```
+$ mysql -h db-host01.my-corp.com -P 3306 -u mysql-tracker-user -p0xCOFFEE ext_tracker_db \
+ < /tmp/tracker_db_backup.sql
+```
+
+When the import is complete, log in to the external database and verify the data is populated. For example:
+
+```
+mysql> SELECT * FROM person LIMIT 5 \G
+...
+mysql> SELECT * FROM story LIMIT 5 \G
+```
+
+
+### Configure Pivotal Tracker to Use External Database
+
+From Ops Manager, click on the Pivotal Tracker tile and choose the Database Config section. Select the
+option to use an External Database and fill in the required information. Save the changes.
+
+Ensure that the *Push Pivotal Tracker* errand is enabled in the Errands section.
+
+Return to the Ops Manager Installation Dashboard and click the **Apply Changes** button.
+*Note:* After applying changes, the existing Pivotal Tracker database in MySQL for PCF
+will be ***destroyed***.
+
+
+### Post-Installation Steps
+
+Log in to Pivotal Tracker and verify the data was migrated (users, projects, stories).
+
+Delete the un-needed maintenance route; the original route (e.g. `tracker.system.cf.biz`) was re-mapped as part of
+the *Push Pivotal Tracker* errand.
