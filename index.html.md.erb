@@ -104,7 +104,7 @@ On average, an active user consumes ~23KB of DB storage and ~100KB of blobstore 
 
 
 ### Migrating from MySQL for PCF to External Database
-Given the following scenario: Pivotal Tracker was configured to use MySQL for PCF, and end-users have data stored in Pivotal Tracker (projects, stories, etc.). If Pivotal Tracker is subsequently reconfigured to use an external database in Ops Manager, the MySQL data will be ***automatically deleted*** upon the next installation in Ops Manager. Be sure to migrate the existing database the new, external database ***prior*** to doing this. Please work with your Pivotal Representative for more details.
+Given the following scenario: Pivotal Tracker was configured to use MySQL for PCF, and end-users have data stored in Pivotal Tracker (projects, stories, etc.). If Pivotal Tracker is subsequently reconfigured to use an external database in Ops Manager, the MySQL data will be ***automatically deleted*** upon the next installation in Ops Manager. Be sure to migrate the existing database to the new, external database ***prior*** to doing this. Please work with your Pivotal Representative for more details.
 
 
 ### Migrating from Riak CS for PCF to External Blobstore
@@ -124,7 +124,7 @@ NOTE: This user does not require any org or space permissions, since the account
 
 
 ### Pivotal Tracker Internal Support Email
-As part of the Pivotal Tracker configuration in Ops Manager, an email must be supplied must be specified that will serve as first-tier support for users of Pivotal Tracker. For more details see [Pivotal Tracker Internal Support Email](#pivotal_tracker_support_email) below.
+As part of the Pivotal Tracker configuration in Ops Manager, an email must be specified that will serve as first-tier support for users of Pivotal Tracker. For more details see [Pivotal Tracker Internal Support Email](#pivotal_tracker_support_email) below.
 
 
 
@@ -190,7 +190,7 @@ By default, Pivotal Tracker uses a MySQL for PCF service instance to store data.
 
 #### External Database
 
-If you prefer to use an external MySQL-compatible databse, enter the necessary configuration details.
+If you prefer to use an external MySQL-compatible database, enter the necessary configuration details.
 
 ***WARNING: Reconfiguring Pivotal Tracker to use an external database will delete any existing Pivotal Tracker MySQL for PCF service and its associated data.***
 
@@ -321,17 +321,17 @@ to an external MySQL database. If any of the steps below aren't clear, please co
 
 #### MySQL for PCF Service Instance Credentials
 
-Log in to Pivotal Tracker with the [admin account](#pivotal_tracker_admin_email) and navigate to `https://<yourdomain>/private_install_info`. Find the `DATABASE_URL` entry, which will be in the following format:  `mysql2://TRACKER_DB_USER:TRACKER_DB_PASSWORD@TRACKER_DB_HOST:3306/TRACKER_DB_NAME?reconnect=true`. Record the databse user, password, and name. For example:
+Log in to Pivotal Tracker with the [admin account](#pivotal_tracker_admin_email) and navigate to `https://<yourdomain>/private_install_info`. Find the `DATABASE_URL` entry, which will be in the following format:  `mysql2://TRACKER_DB_USER:TRACKER_DB_PASSWORD@TRACKER_DB_HOST:3306/TRACKER_DB_NAME?reconnect=true`. Record the database user, password, and name. For example:
 
-| Credential Name       | Value                                       |
+| Credential Name       | Example Value                               |
 | --------------------- | ------------------------------------------- |
 | TRACKER\_DB\_USER     | zmiXBCnJUXdWOlk4                            |
 | TRACKER\_DB\_PASSWORD | 96hsLUvnP9l4GYqP                            |
 | TRACKER\_DB\_NAME     | cf_aca7137f\_49b7\_4926\_a96b\_b053659c5bd4 |
 
-From Ops Manager, click on the MySQL for PCF tile. Go to the 'Credentials' tab and record the VM Credentials for the MySQL Server job. In the 'Status' tab and record one of the IPs listed under the MySQL Server job. For example:
+From Ops Manager, click on the MySQL for PCF tile. Go to the 'Credentials' tab and record the VM Credentials for the MySQL Server job. Go to the 'Status' tab and record one of the IPs listed under the MySQL Server job. For example:
 
-| Credential Name     | Value            |
+| Credential Name     | Example Value    |
 | ------------------- | ---------------- |
 | MYSQL\_VM\_USER     | vcap             |
 | MYSQL\_VM\_PASSWORD | 4cde067ab5f331fa |
@@ -341,7 +341,7 @@ From Ops Manager, click on the MySQL for PCF tile. Go to the 'Credentials' tab a
 
 For the external database, record the hostname, port, user, password, and database name. For example:
 
-| Credential Name        | Value                 |
+| Credential Name        | Example Value         |
 | ---------------------- | --------------------- |
 | EXTERNAL\_DB\_HOSTNAME | db-host01.my-corp.com |
 | EXTERNAL\_DB\_PORT     | 3306                  |
