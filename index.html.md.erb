@@ -167,8 +167,6 @@ Enter the email address where support requests from Pivotal Tracker users will b
 #### Number of App Instances
 This specifies the number of Elastic Runtime application instances to use for Pivotal Tracker web application. Increase for more redundancy and/or scalability.  E.g., if you want the Pivotal Tracker web app to remain available even if one of the web app instances is restarted, set this to 2.
 
-#### Run in Debug Mode
-Check this to run the Pivotal Tracker workers as separate Elastic Runtime apps. You may want to enable this to increase isolation of worker apps, or if you are trying to debug an issue affecting a specific type of job and want to easily filter its logs. Note: this will consume three additional Elastic Runtime application instances, versus the default of two (one web app and one worker app).
 
 
 ### Blobstore Config
