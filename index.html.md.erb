@@ -8,14 +8,14 @@ title: Pivotal Tracker
 <dl>
   <dt>Current Pivotal Tracker Details</dt>
   <dd>
-    <strong>Version</strong>: 1.2.1.14
+    <strong>Version</strong>: 1.3.1.1
   </dd>
   <dd>
-    <strong>Release Date</strong>: 5 October 2015</dd>
+    <strong>Release Date</strong>: 2 November 2015</dd>
   <dd>
-    <strong>Compatible Ops Manager Version(s)</strong>: 1.5.x, 1.4.x</dd>
+    <strong>Compatible Ops Manager Version(s)</strong>: 1.6.x, 1.5.x</dd>
   <dd>
-    <strong>Compatible Elastic Runtime Version(s)</strong>: 1.5.x, 1.4.x</dd>
+    <strong>Compatible Elastic Runtime Version(s)</strong>: 1.6.x, 1.5.x</dd>
   <dd>
     <strong>vSphere support?</strong>
     Yes</dd>
@@ -50,6 +50,7 @@ Consider the following compatibility information before upgrading Pivotal Tracke
             <li>From 1.2.1.5 to 1.2.1.9, 1.2.1.10</li>
             <li>From 1.2.1.9 to 1.2.1.10</li>
             <li>From 1.2.1.10 to 1.2.1.14</li>
+            <li>From 1.2.1.14 to 1.2.1.15</li>
           </ul>
         </td>
       </tr>
@@ -59,7 +60,15 @@ Consider the following compatibility information before upgrading Pivotal Tracke
           <ul>
             <li>From 1.2.1.9 to 1.2.1.10</li>
             <li>From 1.2.1.10 to 1.2.1.14</li>
+            <li>From 1.2.1.14 to 1.2.1.15</li>
+            <li>From 1.2.1.15 to 1.3.1.1</li>
           </ul>
+        </td>
+      </tr>
+      <tr>
+        <th>1.6.x</th>
+        <td>
+          None. 1.3.1.1 is the only release compatible with Ops Manager 1.6.x
         </td>
       </tr>
     </tbody>
@@ -68,8 +77,8 @@ Consider the following compatibility information before upgrading Pivotal Tracke
 
 
 ## Software Requirements
-- Ops Manager 1.4 or later
-- Elastic Runtime 1.4 or later, with SMTP configured
+- Ops Manager 1.5 or later
+- Elastic Runtime 1.5 or later, with SMTP configured
 - MySQL 5.5 or later database (optionally [MySQL for PCF](https://network.pivotal.io/products/p-mysql))
 - S3-compatible blobstore (optionally [Riak CS for PCF](https://network.pivotal.io/products/p-riakcs))
 
@@ -86,7 +95,7 @@ Consider the following compatibility information before upgrading Pivotal Tracke
   - tracker-app: 1.5GB RAM, 1GB ephemeral disk
   - tracker-workers: 1GB RAM, 1GB ephemeral disk
 
-Minimal Pivotal Tracker installation: 4GB RAM, 4.5GB ephemeral disk, 3GB persistent disk. Additional tracker-app instances: 1.5GB RAM, 1GB ephemeral disk. Splitting workers into separate apps: 4GB RAM, 4GB ephemeral disk.
+Minimal Pivotal Tracker installation: 4GB RAM, 4.5GB ephemeral disk, 3GB persistent disk. Additional tracker-app instances: 1.5GB RAM, 1GB ephemeral disk.
 
 
 
