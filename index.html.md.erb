@@ -222,8 +222,8 @@ It uses the *system_services* Elastic Runtime user to:
 
 1. Create a *pivotal-tracker* Space under the *system* Org
 1. Provision MySQL and Blobstore service instances
-  * If a PCF-provided service is selected in Ops Manager, a service instance will be provisioned using the [CF marketplace](/pivotalcf/devguide/services/#instances).
-  * If external service credentials are provided, a [user-provided service instance](/pivotalcf/devguide/services/#user-provided-services) will be created.
+  * If a PCF-provided service is selected in Ops Manager, a service instance will be provisioned using the [CF marketplace](http://docs.pivotal.io/pivotalcf/devguide/services/#instances).
+  * If external service credentials are provided, a [user-provided service instance](http://docs.pivotal.io/pivotalcf/services/#user-provided-services) will be created.
 1. Push the Pivotal Tracker Web and Worker apps to Elastic Runtime
 
 
@@ -241,7 +241,7 @@ You may change the resource configuration, but the defaults should be sufficient
 
 
 ### Logging
-Pivotal Tracker Web and Worker apps log via Elastic Runtime [Loggregator](/pivotalcf/loggregator/architecture.html).
+Pivotal Tracker Web and Worker apps log via Elastic Runtime [Loggregator](http://docs.pivotal.io/pivotalcf/loggregator/architecture.html).
 
 Logs for Pivotal Tracker Memcached and Solr jobs are available from the *Logs* section in Ops Manager.
 
@@ -302,7 +302,7 @@ New Pivotal Tracker users can be invited via the Project "Add/Remove Members" pa
 1. The invited person does not need to be an existing Elastic Runtime user at the time of invitation.  If the invitee is a new user, they must complete the Elastic Runtime signup process before they can accept the Pivotal Tracker project invitation.
 
 #### Self-service Signup of New Users
-Because Pivotal Tracker uses the Elastic Runtime for user authentication, the ability for end-users to self-provision their own Pivotal Tracker accounts depends on the configuration of Elastic Runtime. Specifically, refer to the [Apps Manager documentation](/pivotalcf/console/console-env-variables.html) pertaining to the `ENABLE_NON_ADMIN_USER_MANAGEMENT` configuration option.
+Because Pivotal Tracker uses the Elastic Runtime for user authentication, the ability for end-users to self-provision their own Pivotal Tracker accounts depends on the configuration of Elastic Runtime. Specifically, refer to the [Apps Manager documentation](http://docs.pivotal.io/pivotalcf/console/console-env-variables.html) pertaining to the `ENABLE_NON_ADMIN_USER_MANAGEMENT` configuration option.
 
 #### Suspended Users
 If a Pivotal Tracker user account is suspended by the Pivotal Tracker Administrator, the affected user will get an HTTP 500 response when trying to authenticate to Pivotal Tracker.
@@ -372,7 +372,7 @@ For the external database, record the hostname, port, user, password, and databa
 To prevent Pivotal Tracker users from adding new data while the migration takes place, map the
 application route to a new URL that is unknown to users. For example: map `tracker.system.cf.biz` to
 `tracker-maintenance.system.cf.biz`. For instructions on modifying routes, refer to the
-[Assign or Change a Route](/pivotalcf/devguide/deploy-apps/routes-domains.html#map-route) documentation.
+[Assign or Change a Route](http://docs.pivotal.io/pivotalcf/devguide/deploy-apps/routes-domains.html#map-route) documentation.
 
 
 ### Export Data to Backup File
