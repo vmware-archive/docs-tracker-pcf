@@ -8,14 +8,14 @@ title: Pivotal Tracker
 <dl>
   <dt>Current Pivotal Tracker Details</dt>
   <dd>
-    <strong>Version</strong>: 1.3.1.5
+    <strong>Version</strong>: 1.3.1.7
   </dd>
   <dd>
-    <strong>Release Date</strong>: 8 February 2016</dd>
+    <strong>Release Date</strong>: 7 June 2016</dd>
   <dd>
-    <strong>Compatible Ops Manager Version(s)</strong>: 1.6.x, 1.5.x</dd>
+    <strong>Compatible Ops Manager Version(s)</strong>: 1.7.x, 1.6.x, 1.5.x</dd>
   <dd>
-    <strong>Compatible Elastic Runtime Version(s)</strong>: 1.6.x, 1.5.x</dd>
+    <strong>Compatible Elastic Runtime Version(s)</strong>: 1.7.x, 1.6.x, 1.5.x</dd>
   <dd>
     <strong>vSphere support?</strong>
     Yes</dd>
@@ -64,9 +64,11 @@ Consider the following compatibility information before upgrading Pivotal Tracke
             <li>From 1.2.1.15 to 1.3.1.2</li>
             <li>From 1.2.1.15 to 1.3.1.4</li>
             <li>From 1.2.1.15 to 1.3.1.5</li>
+            <li>From 1.2.1.15 to 1.3.1.7</li>
             <li>From 1.3.1.2 to 1.3.1.4</li>
-            <li>From 1.3.1.2 to 1.3.1.5</li>
-            <li>From 1.3.1.4 to 1.3.1.5</li>
+            <li>From 1.3.1.2 to 1.3.1.7</li>
+            <li>From 1.3.1.4 to 1.3.1.7</li>
+            <li>From 1.3.1.5 to 1.3.1.7</li>
           </ul>
         </td>
       </tr>
@@ -76,11 +78,25 @@ Consider the following compatibility information before upgrading Pivotal Tracke
           <ul>
             <li>From 1.3.1.1 to 1.3.1.2</li>
             <li>From 1.3.1.2 to 1.3.1.4</li>
-            <li>From 1.3.1.2 to 1.3.1.5</li>
-            <li>From 1.3.1.4 to 1.3.1.5</li>
+            <li>From 1.3.1.2 to 1.3.1.7</li>
+            <li>From 1.3.1.4 to 1.3.1.7</li>
+            <li>From 1.3.1.5 to 1.3.1.7</li>
           </ul>
         </td>
       </tr>
+      <tr>
+        <th>1.7.x</th>
+        <td>
+          <ul>
+            <li>From 1.3.1.1 to 1.3.1.7</li>
+            <li>From 1.3.1.2 to 1.3.1.7</li>
+            <li>From 1.3.1.2 to 1.3.1.7</li>
+            <li>From 1.3.1.4 to 1.3.1.7</li>
+            <li>From 1.3.1.5 to 1.3.1.7</li>
+          </ul>
+        </td>
+      </tr>
+
     </tbody>
   </table>
 
@@ -89,6 +105,7 @@ Consider the following compatibility information before upgrading Pivotal Tracke
 ## Software Requirements
 - Ops Manager 1.5 or later
 - Elastic Runtime 1.5 or later, with SMTP configured
+- [Ruby Buildpack 1.6.8](https://network.pivotal.io/products/buildpacks#/releases/630) installed as 'p-tracker_buildpack'
 - MySQL 5.5 or later database (optionally [MySQL for PCF](https://network.pivotal.io/products/p-mysql))
 - S3-compatible blobstore (optionally [Riak CS for PCF](https://network.pivotal.io/products/p-riakcs))
 
@@ -132,6 +149,15 @@ Given the following scenario: Pivotal Tracker was configured to use Riak CS for 
 
 
 ## Installation Prerequisites
+
+### Pivotal Tracker Buildpack
+To ensure the required version of Ruby is available for Pivotal Tracker, the [Ruby Buildpack 1.6.8](https://network.pivotal.io/products/buildpacks#/releases/630) must be uploaded to Elastic Runtime as "p-tracker_buildpack". After downloading the buildpack from [Pivotal Network](https://network.pivotal.io/products/buildpacks#/releases/630), upload it as an administrator to Elastic Runtime with the "cf" CLI:
+
+```
+cf create-buildpack p-tracker_buildpack ruby_buildpack-cached-v1.6.8+1446579066.zip 99 --enable
+```
+
+Refer to the [Adding Buildpacks to Cloud Foundry](/pivotalcf/adminguide/buildpacks.html) documentation for more information.
 
 
 ### Pivotal Tracker Admin User
