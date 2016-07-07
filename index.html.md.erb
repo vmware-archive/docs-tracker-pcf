@@ -318,7 +318,7 @@ The Pivotal Tracker Admin can access various pages to control the appearance and
 ### <a name="user_administration"></a>User Administration
 
 #### Account Email Validation
-Note that Pivotal Tracker has stricter validation rules for a "valid" email address when compared to the Elastic Runtime UAA. It's possible an Elastic Runtime user was provisioned with an email such as `user@hostname`, which will fail validation when attempting to log in to Pivotal Tracker. We plan to address this limitation in a future release of Pivotal Tracker; in the meantime, the email will need to be changed by an Elastic Runtime administrator to an acceptable address such as `user@hostname.com`.
+Note that Pivotal Tracker has stricter validation rules for a "valid" email address when compared to the Elastic Runtime UAA. It's possible an Elastic Runtime user was provisioned with an email such as `user@example.com`, which will fail validation when attempting to log in to Pivotal Tracker. We plan to address this limitation in a future release of Pivotal Tracker; in the meantime, the email will need to be changed by an Elastic Runtime administrator to an acceptable address such as `user@hostname.example.com`.
 
 #### Inviting Users to a Pivotal Tracker Project
 New Pivotal Tracker users can be invited via the Project "Add/Remove Members" page. Users can be added to multiple projects.
@@ -386,7 +386,7 @@ For the external database, record the hostname, port, user, password, and databa
 
 | Credential Name        | Example Value         |
 | ---------------------- | --------------------- |
-| EXTERNAL\_DB\_HOSTNAME | db-host01.my-corp.com |
+| EXTERNAL\_DB\_HOSTNAME | db-host01.example.com |
 | EXTERNAL\_DB\_PORT     | 3306                  |
 | EXTERNAL\_DB\_USER     | mysql-tracker-user    |
 | EXTERNAL\_DB\_PASSWORD | 0xCOFFEE              |
@@ -438,7 +438,7 @@ mysql -h EXTERNAL_DB_HOSTNAME -P EXTERNAL_DB_PORT -u EXTERNAL_DB_USER -pEXTERNAL
 Note: There is no space between `-p` and EXTERNAL\_DB\_PASSWORD. For example:
 
 ```
-$ mysql -h db-host01.my-corp.com -P 3306 -u mysql-tracker-user -p0xCOFFEE ext_tracker_db \
+$ mysql -h db-host01.my-corp.example.com -P 3306 -u mysql-tracker-user -p0xCOFFEE ext_tracker_db \
  < /tmp/tracker_db_backup.sql
 ```
 
