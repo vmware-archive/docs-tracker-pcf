@@ -109,7 +109,7 @@ Consider the following compatibility information before upgrading Pivotal Tracke
 - Elastic Runtime 1.5 or later, with SMTP configured
 - [Ruby Buildpack 1.6.8](https://network.pivotal.io/products/buildpacks#/releases/630) installed as 'p-tracker_buildpack'
 - MySQL 5.5 or later database (optionally [MySQL for PCF](https://network.pivotal.io/products/p-mysql))
-- S3-compatible blobstore (optionally [Riak CS for PCF](https://network.pivotal.io/products/p-riakcs))
+- S3-compatible blobstore
 
 
 
@@ -219,7 +219,7 @@ This specifies the number of Elastic Runtime application instances to use for Pi
 ### Blobstore Config
 
 #### Riak CS Service
-By default, Pivotal Tracker uses a Riak CS for PCF service instance to store file uploads attached to Pivotal Tracker Stories. Specify the Riak CS service plan to use when provisioning the Pivotal Tracker blobstore. Refer to the Riak CS [Service Plan documentation](/p-riakcs/index.html#service-plan) for more information.
+By default, Pivotal Tracker uses a Riak CS for PCF service instance to store file uploads attached to Pivotal Tracker Stories. Specify the Riak CS service plan to use when provisioning the Pivotal Tracker blobstore. 
 
 #### External Blobstore
 
